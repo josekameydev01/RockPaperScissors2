@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var numOfQuestion = 1
     @State private var score = 0
-    @State private var appChoice = "paper"
+    @State private var appChoice = Moves.allCases.randomElement() ?? .paper
     @State private var userShouldWin = false
     
     enum RoundResult{
@@ -29,8 +29,16 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                Text("App choice")
-                Text("The user should win")
+                HStack(spacing: 0){
+                    Text("App choice: ")
+                    Text("\(appChoice.rawValue)")
+                        .fontWeight(.bold)
+                }
+                HStack(spacing: 0) {
+                    Text("The user should ")
+                    Text(userShouldWin ? "win" : "lose")
+                        .fontWeight(.bold)
+                }
                 Spacer()
                 Spacer()
                 VStack(spacing: 25) {
@@ -38,7 +46,7 @@ struct ContentView: View {
                         let currentMove = moves[number]
                         VStack {
                             Button {
-                                // TODO: Add functionality
+                                startRound()
                             } label: {
                                 Image(currentMove)
                                     .resizable()
@@ -56,6 +64,10 @@ struct ContentView: View {
             }
             .navigationTitle("RockPaperScissors2")
         }
+    }
+    private func startRound() {
+        appChoice = Moves.allCases.randomElement() ?? .paper
+        userShouldWin = Bool.random()
     }
 }
 
